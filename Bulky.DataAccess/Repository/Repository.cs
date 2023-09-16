@@ -13,23 +13,42 @@ namespace BulkyBook.DataAccess.Repository
         public Repository(ApplicationDbContext db)
         {
             _db = db;
-            _dbSet= _db.Set<T>();
+            _dbSet = _db.Set<T>();
+            _db.Products.Include(u => u.Category).Include(u => u.CategoryID);
         }
         public void Add(T entity)
         {
             _dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = _dbSet;
             query = query.Where(filter);
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
             return query.FirstOrDefault();
         }
-
-        public IEnumerable<T> GetAll()
+        //Category,CoverTyp
+        public IEnumerable<T> GetAll(string? includeProperties = null)
         {
-            IQueryable<T> query = _dbSet; 
+            IQueryable<T> query = _dbSet;
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
             return query.ToList();
         }
 
@@ -40,7 +59,7 @@ namespace BulkyBook.DataAccess.Repository
 
         public void RemoveRange(IEnumerable<T> entity)
         {
-           _dbSet.RemoveRange(entity);
+            _dbSet.RemoveRange(entity);
         }
     }
 }

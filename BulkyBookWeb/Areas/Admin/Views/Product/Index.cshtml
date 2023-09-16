@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <table class="table table-bordered table-striped">
+        <table id="tblProduct" class="table table-bordered table-striped" style="width:100%">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -30,7 +30,7 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+           @*  <tbody>
                 @foreach (var obj in Model)
                 {
                     <tr>
@@ -39,7 +39,7 @@
                         
                         <td>@obj.ListPrice</td>
                         <td>@obj.Author</td>
-                        <td></td>
+                        <td>@obj.Category.Name</td>
                         <td>
                             <div class="w-75 btn-group" role="group">
                                 <a asp-area="Admin" asp-controller="Product" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
@@ -52,8 +52,12 @@
                         </td>
                     </tr>
                 }
-            </tbody>
+            </tbody> *@
         </table>
 
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/Product.js"></script>
+}
