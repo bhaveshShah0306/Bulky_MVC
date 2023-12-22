@@ -22,7 +22,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
         }
         public IActionResult Index()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity; ;
+            var claimsIdentity = (ClaimsIdentity)User.Identity; 
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             ShoppingCartVM = new()
@@ -41,7 +41,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         public IActionResult Summary()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity; ;
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             ShoppingCartVM = new()
@@ -68,7 +68,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
         [ActionName("Summary")]
         public IActionResult SummaryPOST()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity; ;
+            var claimsIdentity = (ClaimsIdentity)User.Identity; 
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             ShoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product");
@@ -110,6 +110,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 };
                 _unitOfWork.OrderDetail.Add(orderDetail);
                 _unitOfWork.Save();
+            }
                 if (applicationUser.CompanyID.GetValueOrDefault() == 0)
                 {
                     //it is a regular customer account and we need to capture payment
@@ -150,7 +151,6 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                     Response.Headers.Add("Location", session.Url);
                     return new StatusCodeResult(303);
                 }
-            }
 
             return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderHeader.Id });
         }
